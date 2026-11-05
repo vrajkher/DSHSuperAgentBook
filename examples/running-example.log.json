@@ -1,0 +1,661 @@
+{
+  "A_received": {
+    "trigger": {
+      "id": "6618ff4acad5e9586f4bba62b50b259c",
+      "threads": [
+        {
+          "source": "github",
+          "id": "7"
+        }
+      ],
+      "addressed": "mention",
+      "channel": {
+        "source": "github",
+        "thread": "github:7",
+        "address": {
+          "number": "7",
+          "url": "https://github.com/demo-org/widgets/issues/7"
+        }
+      }
+    },
+    "thread7": {
+      "pending": 1,
+      "evaluating": false,
+      "subscriptions": 0
+    },
+    "decisions7": []
+  },
+  "A_evalStarted": {
+    "strength": "explicit",
+    "gate": {
+      "source": "github",
+      "scope": {
+        "number": 7,
+        "isPr": false,
+        "kind": "issue"
+      },
+      "row": "issues",
+      "sender": "alice",
+      "via": "addressed",
+      "addressed": "mention"
+    },
+    "thread7": {
+      "pending": 0,
+      "evaluating": true,
+      "subscriptions": 0
+    },
+    "decisions7": []
+  },
+  "A_accepted": {
+    "decision": {
+      "kind": "accept",
+      "ticketId": "97bdef3207031d61e10165dee53441b3",
+      "mandate": {
+        "strength": "explicit",
+        "policyVersion": "7322d455c5660f66bae9cb7a3fb2839c",
+        "basis": {
+          "source": "github",
+          "scope": {
+            "number": 7,
+            "isPr": false,
+            "kind": "issue"
+          },
+          "row": "issues",
+          "sender": "alice",
+          "via": "addressed",
+          "addressed": "mention"
+        },
+        "actor": {
+          "source": "github",
+          "id": "alice"
+        },
+        "scope": "Improve README setup instructions"
+      }
+    },
+    "outbox": [
+      "acknowledgement"
+    ],
+    "launches": 1,
+    "ticket": {
+      "stage": {
+        "stage": "working"
+      },
+      "execution": {
+        "name": "readme-setup-97bdef320703",
+        "directory": "/srv/state/work/readme-setup-97bdef320703",
+        "assignment": ""
+      },
+      "mandate": {
+        "strength": "explicit",
+        "via": "addressed",
+        "actor": "alice"
+      },
+      "assignments": [
+        {
+          "state": "running"
+        }
+      ],
+      "inputs": [],
+      "undelivered": 0
+    },
+    "thread7": {
+      "pending": 0,
+      "evaluating": false,
+      "subscriptions": 1
+    },
+    "decisions7": [
+      {
+        "kind": "accept",
+        "reason": [
+          "explicitRouted"
+        ]
+      }
+    ]
+  },
+  "B_duplicate": {
+    "result": "duplicate",
+    "ticket": {
+      "stage": {
+        "stage": "working"
+      },
+      "execution": {
+        "name": "readme-setup-97bdef320703",
+        "directory": "/srv/state/work/readme-setup-97bdef320703",
+        "assignment": ""
+      },
+      "mandate": {
+        "strength": "explicit",
+        "via": "addressed",
+        "actor": "alice"
+      },
+      "assignments": [
+        {
+          "state": "running"
+        }
+      ],
+      "inputs": [],
+      "undelivered": 0
+    },
+    "thread7": {
+      "pending": 0,
+      "evaluating": false,
+      "subscriptions": 1
+    },
+    "decisions7": [
+      {
+        "kind": "accept",
+        "reason": [
+          "explicitRouted"
+        ]
+      }
+    ]
+  },
+  "C_unauthorized": {
+    "thread8Decisions": [
+      {
+        "kind": "ignore",
+        "reason": [
+          {
+            "code": "not_a_member",
+            "triggerId": "36d93a4a036ec6bb5dc3ace4baf82616"
+          }
+        ]
+      }
+    ],
+    "candidates": 1
+  },
+  "D_unauthorizedOnTicketThread": {
+    "owners": [
+      "97bdef3207031d61e10165dee53441b3"
+    ],
+    "disposition": {
+      "fanout": [
+        "97bdef3207031d61e10165dee53441b3"
+      ],
+      "at": "2026-11-01T09:00:12.000Z"
+    },
+    "ticket": {
+      "stage": {
+        "stage": "working"
+      },
+      "execution": {
+        "name": "readme-setup-97bdef320703",
+        "directory": "/srv/state/work/readme-setup-97bdef320703",
+        "assignment": ""
+      },
+      "mandate": {
+        "strength": "explicit",
+        "via": "addressed",
+        "actor": "alice"
+      },
+      "assignments": [
+        {
+          "state": "running"
+        }
+      ],
+      "inputs": [
+        "trigger(human)"
+      ],
+      "undelivered": 1
+    },
+    "thread7": {
+      "pending": 0,
+      "evaluating": false,
+      "subscriptions": 1
+    },
+    "decisions7": [
+      {
+        "kind": "accept",
+        "reason": [
+          "explicitRouted"
+        ]
+      }
+    ]
+  },
+  "E_followup": {
+    "owners": [
+      "97bdef3207031d61e10165dee53441b3"
+    ],
+    "ticket": {
+      "stage": {
+        "stage": "working"
+      },
+      "execution": {
+        "name": "readme-setup-97bdef320703",
+        "directory": "/srv/state/work/readme-setup-97bdef320703",
+        "assignment": ""
+      },
+      "mandate": {
+        "strength": "explicit",
+        "via": "addressed",
+        "actor": "alice"
+      },
+      "assignments": [
+        {
+          "state": "running"
+        }
+      ],
+      "inputs": [
+        "trigger(human)",
+        "trigger(human)"
+      ],
+      "undelivered": 2
+    },
+    "thread7": {
+      "pending": 0,
+      "evaluating": false,
+      "subscriptions": 1
+    },
+    "decisions7": [
+      {
+        "kind": "accept",
+        "reason": [
+          "explicitRouted"
+        ]
+      }
+    ]
+  },
+  "F_failed": {
+    "botHeldBack": true,
+    "ticket": {
+      "stage": {
+        "stage": "person",
+        "action": "failed"
+      },
+      "execution": {
+        "name": "readme-setup-97bdef320703",
+        "directory": "/srv/state/work/readme-setup-97bdef320703",
+        "assignment": ""
+      },
+      "mandate": {
+        "strength": "explicit",
+        "via": "addressed",
+        "actor": "alice"
+      },
+      "assignments": [
+        {
+          "state": "running",
+          "report": "failed"
+        }
+      ],
+      "inputs": [
+        "trigger(human)",
+        "trigger(human)",
+        "trigger(bot)"
+      ],
+      "undelivered": 2
+    },
+    "thread7": {
+      "pending": 0,
+      "evaluating": false,
+      "subscriptions": 1
+    },
+    "decisions7": [
+      {
+        "kind": "accept",
+        "reason": [
+          "explicitRouted"
+        ]
+      },
+      {
+        "kind": "ignore",
+        "reason": [
+          "not_human"
+        ]
+      }
+    ]
+  },
+  "F_retried": {
+    "stops": [
+      "retried"
+    ],
+    "ticket": {
+      "stage": {
+        "stage": "working"
+      },
+      "execution": {
+        "name": "readme-setup-97bdef320703",
+        "directory": "/srv/state/work/readme-setup-97bdef320703",
+        "assignment": ""
+      },
+      "mandate": {
+        "strength": "explicit",
+        "via": "addressed",
+        "actor": "alice"
+      },
+      "assignments": [
+        {
+          "state": "ended",
+          "report": "failed",
+          "endedReason": "retried"
+        },
+        {
+          "state": "running"
+        }
+      ],
+      "inputs": [
+        "trigger(human)",
+        "trigger(human)",
+        "trigger(bot)"
+      ],
+      "undelivered": 2
+    },
+    "thread7": {
+      "pending": 0,
+      "evaluating": false,
+      "subscriptions": 1
+    },
+    "decisions7": [
+      {
+        "kind": "accept",
+        "reason": [
+          "explicitRouted"
+        ]
+      },
+      {
+        "kind": "ignore",
+        "reason": [
+          "not_human"
+        ]
+      }
+    ]
+  },
+  "G_restart": {
+    "ticket": {
+      "stage": {
+        "stage": "working",
+        "action": "queued"
+      },
+      "execution": {
+        "name": "readme-setup-97bdef320703",
+        "directory": "/srv/state/work/readme-setup-97bdef320703",
+        "assignment": ""
+      },
+      "mandate": {
+        "strength": "explicit",
+        "via": "addressed",
+        "actor": "alice"
+      },
+      "assignments": [
+        {
+          "state": "ended",
+          "report": "failed",
+          "endedReason": "retried"
+        },
+        {
+          "state": "ended",
+          "endedReason": "hostRestarted"
+        },
+        {
+          "state": "pending"
+        }
+      ],
+      "inputs": [
+        "trigger(human)",
+        "trigger(human)",
+        "trigger(bot)",
+        "text"
+      ],
+      "undelivered": 3
+    },
+    "thread7": {
+      "pending": 0,
+      "evaluating": false,
+      "subscriptions": 1
+    },
+    "decisions7": [
+      {
+        "kind": "accept",
+        "reason": [
+          "explicitRouted"
+        ]
+      },
+      {
+        "kind": "ignore",
+        "reason": [
+          "not_human"
+        ]
+      }
+    ]
+  },
+  "H_stopRefused": {
+    "decision": {
+      "kind": "ignore",
+      "strength": "inferred",
+      "reason": [
+        {
+          "code": "stopNotExplicit"
+        }
+      ]
+    },
+    "ticket": {
+      "stage": {
+        "stage": "working"
+      },
+      "execution": {
+        "name": "readme-setup-97bdef320703",
+        "directory": "/srv/state/work/readme-setup-97bdef320703",
+        "assignment": ""
+      },
+      "mandate": {
+        "strength": "explicit",
+        "via": "addressed",
+        "actor": "alice"
+      },
+      "assignments": [
+        {
+          "state": "ended",
+          "report": "failed",
+          "endedReason": "retried"
+        },
+        {
+          "state": "ended",
+          "endedReason": "hostRestarted"
+        },
+        {
+          "state": "running"
+        }
+      ],
+      "inputs": [
+        "trigger(human)",
+        "trigger(human)",
+        "trigger(bot)",
+        "text",
+        "trigger(human)"
+      ],
+      "undelivered": 4
+    },
+    "thread7": {
+      "pending": 0,
+      "evaluating": false,
+      "subscriptions": 1
+    },
+    "decisions7": [
+      {
+        "kind": "accept",
+        "reason": [
+          "explicitRouted"
+        ]
+      },
+      {
+        "kind": "ignore",
+        "reason": [
+          "not_human"
+        ]
+      },
+      {
+        "kind": "ignore",
+        "reason": [
+          "stopNotExplicit"
+        ]
+      }
+    ]
+  },
+  "I_stopped": {
+    "decision": {
+      "kind": "stop",
+      "strength": "explicit"
+    },
+    "stops": [
+      "retried",
+      "requester asked to stop"
+    ],
+    "ticket": {
+      "stage": {
+        "stage": "ended"
+      },
+      "ended": {
+        "at": "2026-11-01T09:00:39.000Z",
+        "by": "human",
+        "outcome": "stopped",
+        "reason": "requester asked to stop"
+      },
+      "execution": {
+        "name": "readme-setup-97bdef320703",
+        "directory": "/srv/state/work/readme-setup-97bdef320703",
+        "assignment": ""
+      },
+      "mandate": {
+        "strength": "explicit",
+        "via": "addressed",
+        "actor": "alice"
+      },
+      "assignments": [
+        {
+          "state": "ended",
+          "report": "failed",
+          "endedReason": "retried"
+        },
+        {
+          "state": "ended",
+          "endedReason": "hostRestarted"
+        },
+        {
+          "state": "ended"
+        }
+      ],
+      "inputs": [
+        "trigger(human)",
+        "trigger(human)",
+        "trigger(bot)",
+        "text",
+        "trigger(human)",
+        "trigger(human)"
+      ],
+      "undelivered": 0
+    },
+    "thread7": {
+      "pending": 3,
+      "evaluating": false,
+      "subscriptions": 1
+    },
+    "decisions7": [
+      {
+        "kind": "accept",
+        "reason": [
+          "explicitRouted"
+        ]
+      },
+      {
+        "kind": "ignore",
+        "reason": [
+          "not_human"
+        ]
+      },
+      {
+        "kind": "ignore",
+        "reason": [
+          "stopNotExplicit"
+        ]
+      },
+      {
+        "kind": "stop",
+        "reason": [
+          "said"
+        ]
+      }
+    ]
+  },
+  "J_afterStop": {
+    "disposition": {
+      "fanout": [],
+      "at": "2026-11-01T09:00:41.000Z",
+      "evalId": "9dc375a6d039e6b652eabda628ad15da"
+    },
+    "ticket": {
+      "stage": {
+        "stage": "ended"
+      },
+      "ended": {
+        "at": "2026-11-01T09:00:39.000Z",
+        "by": "human",
+        "outcome": "stopped",
+        "reason": "requester asked to stop"
+      },
+      "execution": {
+        "name": "readme-setup-97bdef320703",
+        "directory": "/srv/state/work/readme-setup-97bdef320703",
+        "assignment": ""
+      },
+      "mandate": {
+        "strength": "explicit",
+        "via": "addressed",
+        "actor": "alice"
+      },
+      "assignments": [
+        {
+          "state": "ended",
+          "report": "failed",
+          "endedReason": "retried"
+        },
+        {
+          "state": "ended",
+          "endedReason": "hostRestarted"
+        },
+        {
+          "state": "ended"
+        }
+      ],
+      "inputs": [
+        "trigger(human)",
+        "trigger(human)",
+        "trigger(bot)",
+        "text",
+        "trigger(human)",
+        "trigger(human)"
+      ],
+      "undelivered": 0
+    },
+    "thread7": {
+      "pending": 0,
+      "evaluating": true,
+      "subscriptions": 1
+    },
+    "decisions7": [
+      {
+        "kind": "accept",
+        "reason": [
+          "explicitRouted"
+        ]
+      },
+      {
+        "kind": "ignore",
+        "reason": [
+          "not_human"
+        ]
+      },
+      {
+        "kind": "ignore",
+        "reason": [
+          "stopNotExplicit"
+        ]
+      },
+      {
+        "kind": "stop",
+        "reason": [
+          "said"
+        ]
+      }
+    ]
+  }
+}

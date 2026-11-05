@@ -1,0 +1,54 @@
+diff --git a/docs/007-architecture.md b/docs/007-architecture.md
+index 184ea54..8f12bec 100644
+--- a/docs/007-architecture.md
++++ b/docs/007-architecture.md
+@@ -408,6 +408,8 @@ Some generic modules still refer directly to GitHub or Feishu:
+ | `tests/policy.spec.ts` | Source scope, the gate, the admission table, Mandate revalidation, the Policy version, settings migrations and assessment outcomes |
+ | `tests/registry.spec.ts` | `SourceRegistry`: instances, validation, Policy parts, Channels and Thread context |
+ | `tests/sources.spec.ts` | The Feishu and GitHub Sources on a `SourceContext`: translation, polls and read positions, the pull request rules, health |
++| `tests/quoted-mention.spec.ts` | A GitHub mention counts only in the author's own words, not in quoted lines or code |
++| `tests/transient.spec.ts` | Which failures of the model provider or the network count as passing |
+ | `tests/commands.spec.ts` | CLI calls as the deployment's accounts, the Channels' answers, and repository-scoped GitHub calls |
+ | `tests/feishu-read.spec.ts`, `tests/github-read.spec.ts` | Feishu and GitHub reads |
+ | `tests/admission-context.spec.ts`, `tests/feishu-image.spec.ts` | The Thread window of assessments, and Feishu image reads |
+diff --git a/src/sources/github-trigger.ts b/src/sources/github-trigger.ts
+index fffd86d..de26689 100644
+--- a/src/sources/github-trigger.ts
++++ b/src/sources/github-trigger.ts
+@@ -57,8 +57,14 @@ function commentText(comment: GithubComment, kind: 'conversation' | 'inline' | '
+   const place = kind === 'inline' && comment.path ? reviewPlace(comment) : ''
+   return [decision, place, comment.body ?? ''].filter(Boolean).join('\n\n')
+ }
++/**
++ * The words a comment's author wrote themselves: without quoted lines (`> …`), fenced code blocks and inline code, which can
++ * repeat an earlier mention of the agent that this author does not make.
++ */
++export const ownWords = (text: string): string => text.replace(/^(?:```|~~~)[^\n]*\n[\s\S]*?^(?:```|~~~)[^\n]*$/gm, '')
++  .split('\n').filter(line => !/^\s*>/.test(line)).join('\n').replace(/`[^`\n]*`/g, '')
+ export const mentions = (text: string, login: string): boolean =>
+-  new RegExp(`(?:^|[^a-zA-Z0-9_@])@${escapeRegExp(login)}(?![a-zA-Z0-9_-])`, 'i').test(text)
++  new RegExp(`(?:^|[^a-zA-Z0-9_@])@${escapeRegExp(login)}(?![a-zA-Z0-9_-])`, 'i').test(ownWords(text))
+ const author = (user: { login: string; type?: string }, agent: string) =>
+   ({ actor: { source: SOURCE, id: user.login }, human: isHumanLogin(user) && !sameName(user.login, agent) })
+ /** Builds a trigger for a comment or review; text is empty for a bodyless comment or a `COMMENTED` review without a body. */
+diff --git a/tests/quoted-mention.spec.ts b/tests/quoted-mention.spec.ts
+new file mode 100644
+index 0000000..01c3504
+--- /dev/null
++++ b/tests/quoted-mention.spec.ts
+@@ -0,0 +1,15 @@
++import { expect, it } from 'vitest'
++import { commentTrigger, mentions } from '../src/sources/github-trigger.ts'
++
++const comment = (body: string) => commentTrigger({ id: 1, body, user: { login: 'alice', type: 'User' }, created_at: '2026-11-01T09:00:00Z' },
++  { number: 7, isPr: false }, 'conversation', 'widgets-agent')
++
++it('counts a mention the author writes, and not one the author only quotes or puts in code', () => {
++  expect(mentions('@widgets-agent fix the README', 'widgets-agent')).toBe(true)
++  expect(mentions('> @widgets-agent fix the README\n\nThanks, looks good', 'widgets-agent')).toBe(false)
++  expect(mentions('Run `@widgets-agent help` to see usage', 'widgets-agent')).toBe(false)
++  expect(mentions('```\n@widgets-agent\n```\nexample above', 'widgets-agent')).toBe(false)
++  expect(mentions('> earlier text\n@widgets-agent please also run lint', 'widgets-agent')).toBe(true)
++  expect(comment('> @widgets-agent fix the README\n\nThanks!')).not.toHaveProperty('addressed')
++  expect(comment('@widgets-agent fix the README')).toMatchObject({ addressed: 'mention' })
++})

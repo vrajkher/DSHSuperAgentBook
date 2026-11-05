@@ -1,0 +1,28 @@
+diff --git a/src/executor/dsh.ts b/src/executor/dsh.ts
+index 26234f3..e7c95ab 100644
+--- a/src/executor/dsh.ts
++++ b/src/executor/dsh.ts
+@@ -41,7 +41,7 @@ const fromPerson = (input?: TicketInput): boolean => input?.kind === 'trigger' ?
+  * DshExecutor catches it to mark the ticket failed immediately rather than retrying automatically, because an existing directory counts as prepared and an automatic retry would treat whatever a failed prepare command left behind in the directory as a prepared workspace.
+  */
+ class PrepareFailed extends Error {}
+-const PASSING = new RegExp(['ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT', 'EAI_AGAIN', 'ENOTFOUND', 'EPIPE', 'UND_ERR', 'socket hang up', 'fetch failed',
++const PASSING = new RegExp(['ECONNRESET', 'ECONNREFUSED', 'ETIMEDOUT', 'EHOSTUNREACH', 'EAI_AGAIN', 'ENOTFOUND', 'EPIPE', 'UND_ERR', 'socket hang up', 'fetch failed',
+   'network error', 'overloaded', 'rate limit', '\\b(?:408|429|50[0-4])\\b'].join('|'), 'i')
+ /**
+  * True when an error represents a transient network or model-provider failure: an HTTP 408, 429, or 5xx status, or a
+diff --git a/tests/transient.spec.ts b/tests/transient.spec.ts
+new file mode 100644
+index 0000000..8b5e665
+--- /dev/null
++++ b/tests/transient.spec.ts
+@@ -0,0 +1,9 @@
++import { expect, it } from 'vitest'
++import { transient } from '../src/executor/dsh.ts'
++
++it('treats an unreachable host as a passing network failure, and a bad request as none', () => {
++  expect(transient(Object.assign(new Error('connect EHOSTUNREACH 10.0.0.1:443'), { code: 'EHOSTUNREACH' }))).toBe(true)
++  expect(transient({ status: 503 })).toBe(true)
++  expect(transient({ status: 400 })).toBe(false)
++  expect(transient(new Error('invalid prompt'))).toBe(false)
++})

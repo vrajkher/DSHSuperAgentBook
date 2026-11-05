@@ -39,10 +39,10 @@ api=http://127.0.0.1:3082/orchestrator/api
 ```
 
 ```bash
-curl -s -H 'x-orchestrator-request: 1' $api/prompts | jq '{revision: .current.revision, delivery: .current.config.sections.delivery}'
+curl -s -H 'x-orchestrator-request: 1' $api/prompts | jq '{revision: .current.revision, delivery: .current.config.delivery}'
 ```
 
-પછી `config.sections.delivery` માં એક વાક્ય ઉમેરીને `PUT prompts` `{ config, baseRevision }` કરો. **[ધારણા]** `sections.delivery` field નું exact નામ `PromptConfigSchema` ([`prompts.ts`](https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/prompts.ts)) પ્રમાણે ચકાસો; live API અમે ચલાવ્યું નથી.
+પછી `config.delivery` માં એક વાક્ય ઉમેરીને `PUT prompts` `{ config, baseRevision }` કરો. **[Source]** Field નામો `communication`, `scope`, `delivery` છે ([`PromptConfigSchema`, `prompts.ts#L35`](https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/prompts.ts#L35)). Live API અમે ચલાવ્યું નથી.
 
 **અસર:** "Sessions read the latest version on every model request". Saving કોઈ session ને restart, cancel કે wake કરતું નથી (`docs/004`). Gate, Mandates અને tool checks બદલાતા નથી.
 

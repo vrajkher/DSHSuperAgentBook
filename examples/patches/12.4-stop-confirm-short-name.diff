@@ -1,0 +1,38 @@
+diff --git a/src/client/locales.ts b/src/client/locales.ts
+index d81d0d4..fb4215b 100644
+--- a/src/client/locales.ts
++++ b/src/client/locales.ts
+@@ -295,7 +295,7 @@ const TEXT = {
+   'input.note': ['主 Session 的备注', 'Orchestrator note'],
+   attentionPrefix: ['待人工决定：', 'Attention: '],
+   stopConfirmTitle: ['停止工单', 'Stop Ticket'],
+-  stopConfirm: ['停止“{title}”？当前派工结束，Session 和执行目录保留；停止收回授权，之后线程里的消息不再恢复它，要继续需要重新接单。', 'Stop "{title}"? Its current Assignment ends; its Session and directory stay. Stopping withdraws its Mandate: later messages on its Threads do not resume it, and continuing needs a new accept.'],
++  stopConfirm: ['停止“{title}”（{name}）？当前派工结束，Session 和执行目录保留；停止收回授权，之后线程里的消息不再恢复它，要继续需要重新接单。', 'Stop "{title}" ({name})? Its current Assignment ends; its Session and directory stay. Stopping withdraws its Mandate: later messages on its Threads do not resume it, and continuing needs a new accept.'],
+   endedAt: ['{time} {outcome}：{reason}', '{time} {outcome}: {reason}'],
+   assignmentNumber: ['第 {number} 次派工', 'Assignment {number}'],
+   inputDelivered: ['已送达', 'Delivered'],
+diff --git a/src/client/ticket.tsx b/src/client/ticket.tsx
+index f240a95..06cafd2 100644
+--- a/src/client/ticket.tsx
++++ b/src/client/ticket.tsx
+@@ -191,7 +191,7 @@ export function TicketPage({ id }: { id: string }) {
+     </div>
+     {data.actions.stop && <div className="dt-danger-zone">
+       <span className="dt-hint">{t('stopHint')}</span>
+-      <ConfirmButton variant="outline" label={t('stop')} title={t('stopConfirmTitle')} message={t('stopConfirm', { title: data.title })}
++      <ConfirmButton variant="outline" label={t('stop')} title={t('stopConfirmTitle')} message={t('stopConfirm', { title: data.title, name: data.directory?.split('/').at(-1) ?? id })}
+         onConfirm={() => after(call('POST tickets/:id/stop', { id }))} />
+     </div>}
+   </>
+diff --git a/tests/panel-execution.spec.tsx b/tests/panel-execution.spec.tsx
+index 0fca556..e185962 100644
+--- a/tests/panel-execution.spec.tsx
++++ b/tests/panel-execution.spec.tsx
+@@ -46,6 +46,7 @@ it('stops an open Ticket from its page after confirmation', async () => {
+   await click(zh.stop)
+   expect(server.requests.some(request => request.path.endsWith('/stop'))).toBe(false)
+   expect(document.querySelector('[role="dialog"]')?.textContent).toContain('停止“修复回归”')
++  expect(document.querySelector('[role="dialog"]')?.textContent).toMatch(/停止“修复回归”（[^）]+）/)
+   await click(zh.confirm)
+   expect(server.requests.some(request => request.path === 'tickets/t1/stop' && request.method === 'POST')).toBe(true)
+ })

@@ -9,7 +9,7 @@
 | Inspection તારીખ | 2026-11-05 |
 | Inspection environment | Linux, Node.js v22.23.4, pnpm 11.7.0, git 2.43.0, tmux 3.4, Python 3.13, gh 2.89.0 |
 | DeepSeek Harness (DSH) | આ environment માં installed **ન હતું**; DSH પર live run નથી કર્યો (જુઓ [Verification report](appendices/F-verification-report.md)) |
-| `pnpm check` પરિણામ | ✅ typecheck, 59 test files / 1197 tests passed, build complete |
+| `pnpm check` પરિણામ | પહેલો run ✅ (59 files / 1197 tests, build complete). પછીના runs માં એક upstream flaky Feishu test fail થયો (1196/1197). કારણ અને fix: [પ્રકરણ 12.6](chapters/12-customization.md#126-upstream-માં-મળેલી-test-flakiness-bonus) |
 
 ## આ પુસ્તક કેવી રીતે વાંચવું
 
@@ -72,6 +72,9 @@ Code excerpts પણ labelled છે: **real** (exact lines), **shortened** (`�
 - [`examples/running-example.log.json`](examples/running-example.log.json): તે test નું observed state
 - [`examples/demo-source.spec.ts`](examples/demo-source.spec.ts): simulated Source (પ્રકરણ 12)
 - [`examples/intake-bench.ts`](examples/intake-bench.ts): intake workload measurement (પ્રકરણ 13)
+- [`examples/final-project.spec.ts`](examples/final-project.spec.ts): ready → PR merged (પ્રકરણ 14)
+- [`examples/transient.spec.ts`](examples/transient.spec.ts), [`examples/quoted-mention.spec.ts`](examples/quoted-mention.spec.ts): patches 12.2 અને 12.5 ના tests (patch વગર fail થાય તે અપેક્ષિત છે)
+- [`examples/patches/`](examples/patches/): verified example patches
 
 Examples ચલાવવા માટે, તેમને pinned checkout ના `tests/` (અથવા `bench/`) માં copy કરો. પગલાં [પ્રકરણ 2](chapters/02-setup-operation.md#25-offline-lab-repository-build-અને-tests) માં છે.
 

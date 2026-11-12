@@ -51,7 +51,7 @@ flowchart TB
 | જરૂરિયાત | આજે છે (✅) | તમારે કરવાનું (📝 / ⚠️) |
 |---|---|---|
 | Process ચાલુ રાખવો | `scripts/dsh-superagent` (start, stop, restart, status; [`script-service`][script-service]) | Reboot પછી આપોઆપ શરૂ (systemd unit) ⚠️ |
-| ત્રણ ચાવી | Setup ([`setup.md`][setup-md]): DSH, model provider, agent નું GitHub ખાતું | ચાવીઓ સુરક્ષિત રાખવી; agent માટે **અલગ**, ઓછી સત્તાવાળું ખાતું |
+| ત્રણ ચાવી | Setup ([`SETUP.md`][setup-md]): DSH, model provider, agent નું GitHub ખાતું | ચાવીઓ સુરક્ષિત રાખવી; agent માટે **અલગ**, ઓછી સત્તાવાળું ખાતું |
 | ચોકીદાર | કલાકદીઠ બહારની તપાસ ([પ્રકરણ 2](02-setup-operation.md)) | ચેતવણી તમારા ફોન સુધી પહોંચાડવી ⚠️ |
 | ચોપડાની નકલ | State directory એક folder છે ([પ્રકરણ 8](08-store-effects-outbox.md)) | નિયમિત backup; upgrade પહેલાં નકલ ⚠️ |
 | પાટિયું દૂરથી | ફક્ત loopback ([પ્રકરણ 10](10-panel.md)) | SSH tunnel; panel ને internet પર **ખુલ્લું ન મૂકો** |

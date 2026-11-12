@@ -82,7 +82,7 @@ GET requests ફક્ત **views** વાંચે છે, અને views ક�
 
 `call` નો type `src/app/api.ts` ના `Api` map પરથી આવે છે ([`api-stop`][api-stop]): `'POST tickets/:id/stop': { response: { stopped: true } }`. Panel bundle server નો code import નથી કરતું, ફક્ત **types**.
 
-🧪 Test "sends one stop for a double click on Confirm" (`pnpm vitest run tests/panel-execution.spec.tsx`) પાસ. Server બાજુ પણ બીજો stop નિરુપદ્રવી છે: [test][test-double-stop].
+🧪 Test "sends one stop for a double click on Confirm" ([code][test-double-stop]; `pnpm vitest run tests/panel-execution.spec.tsx`) પાસ. Server બાજુ પણ બીજો stop નિરુપદ્રવી છે: [`Tickets.end`][tickets-end] બંધ Ticket પર તરત પાછું ફરે છે (`if (!liveTicket(ticket)) return`). ✅
 
 🔬 **Expert નજર.** રક્ષણ બે સ્તરે છે, અને બંને જરૂરી છે. Client નું `running` ref સામાન્ય કિસ્સો (ધ્રૂજતી આંગળી) પકડે છે અને બિનજરૂરી request બચાવે છે. Server ની idempotency (બંધ Ticket ને ફરી બંધ કરવું કશું નથી કરતું) બાકીના બધા કિસ્સા પકડે છે: બે tabs, retry કરતું network, script. **Client ની તપાસ સગવડ છે; server ની તપાસ ખાતરી છે.** Client ની તપાસ પર કદી સુરક્ષા ન ટેકવો.
 
@@ -248,5 +248,6 @@ pnpm vitest run tests/panel-execution.spec.tsx tests/http.spec.ts tests/draft.sp
 [setup-restart]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/setup.ts#L59
 [stage-fn]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/core/stage.ts#L9-L21
 [test-double-stop]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/tests/panel-execution.spec.tsx#L217
+[tickets-end]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/core/tickets.ts#L345-L363
 [views-actions]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/views/records.ts#L123
 <!-- citations:end -->

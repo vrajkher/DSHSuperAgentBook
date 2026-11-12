@@ -83,11 +83,11 @@ Worker Session નું નામ પણ સિક્કો છે: [`workerSes
 | `DSH_SUPERAGENT_GITHUB_NUMBER` | `7` | GitHub kind |
 | `DSH_SUPERAGENT_GITHUB_PR_HEAD` | `''` (Issue છે, PR નહીં) | GitHub kind |
 
-નામોમાં `KEY`, `PASSWORD`, `SECRET` કે `TOKEN` નથી, કારણ કે DSH એવાં નામવાળાં variables ને child process માંથી કાઢી નાખે છે ([code][env-token]).
+નામોમાં `KEY`, `PASSWORD`, `SECRET` કે `TOKEN` નથી, કારણ કે DSH એવાં નામવાળાં variables ને child process માંથી કાઢી નાખે છે (`src/infra/environment.ts` ની શરૂઆતની comment). એ જ file worker ના environment માંથી host ના `GH_TOKEN` અને `GITHUB_TOKEN` પણ કાઢે છે ([code][env-token]).
 
 Session બનાવવું [`Sessions.ensure`][sessions-ensure] નું કામ છે, અને તે **DSH ને સોંપે છે**: agent, workspace, role મુજબનું model, prompts અને tools ([presets][sessions-presets], [worker tools][sessions-worktools]).
 
-🧪 Test "fails a ticket whose prepare command fails, without a retry" ([code][test-prepare]) પાસ.
+🧪 Test "runs the prepare command once for a new ticket, under the execution root with the ticket's environment, and fails the ticket with its output" ([code][test-prepare]) પાસ.
 
 > ⚠️ **અચકાસાયેલું.** અમે ખરો prepare command (git worktree) ખરા DSH સાથે ચલાવ્યો નથી.
 
@@ -103,7 +103,7 @@ Session બનાવવું [`Sessions.ensure`][sessions-ensure] નું ક
 
 - `used()` = ચાલુ workers + શરૂ થઈ રહેલાં reservations.
 - `reserve(ticketId, 'launch' | 'wake' | 'person')`: જગ્યા ન હોય તો `Later` throw ([`Later`][effects-later]: "પછી પ્રયત્ન કરો, આ નિષ્ફળતા નથી").
-- **`person` ને `maxWorkers + 1` સુધી** જગ્યા. Default `maxWorkers` 3 ([`ExecutionConfigSchema`][policy-execcfg]).
+- **`person` ને `maxWorkers + 1` સુધી** જગ્યા. Default `maxWorkers` 3 ([`ExecutorConfigSchema`][policy-execcfg]).
 - Reservation **synchronously**, કોઈ `await` પહેલાં થાય છે.
 
 🧪 Test "wakes an idle worker for a person's message at once, in the slot kept beyond the limit" પાસ (`pnpm vitest run tests/runtime-concurrency.spec.ts`).
@@ -195,7 +195,7 @@ else if (ticket.undelivered.length) this.options.executor.deliver(ticket, runnin
 
 ક્ષણિક ભૂલ અલગ છે: worker નો turn `agent/error` આપે અને ભૂલ [`transient`][dsh-transient] હોય (HTTP 408/429/5xx, `ECONNRESET`, `rate limit`…), તો [`resumeAfter`][dsh-resume-after] 15 s, 30 s, 60 s પછી કહે છે: "Your last turn failed for a passing reason (…). Continue the assignment where it stopped." ત્રણ વાર પછી `failed`.
 
-રદ કરવું ([`stop`][dsh-stop]) પણ `store.afterCommit` માં થાય છે: "so a rollback leaves the worker working". 🧪 Test "stops a ticket once when stop is called twice" ([code][test-double-stop]).
+રદ કરવું ([`stop`][dsh-stop]) પણ `store.afterCommit` માં થાય છે: "so a rollback leaves the worker working". અને બંધ Ticket ને ફરી બંધ કરવું કશું નથી કરતું: [`Tickets.end`][tickets-end] ની પહેલી લીટી `if (!liveTicket(ticket)) return` છે. ✅
 
 🔬 **Expert નજર.** Restart પછી worker ને ફરી ચલાવવો એ **at-least-once execution** છે: git push કે PR comment બે વાર થઈ શકે. Core આને રોકી શકતું નથી (worker ના shell commands તેના કાબૂ બહાર છે), એટલે ઉપાય **prompt ના સ્તરે** છે: recovery note worker ને પહેલાં દુનિયાની સ્થિતિ તપાસવા કહે છે. આ પ્રામાણિક ડિઝાઇન છે: જે ખાતરી code આપી શકે તે code આપે, અને બાકીની model ને સ્પષ્ટ શબ્દોમાં સોંપાય, તેની મર્યાદા સ્વીકારીને.
 
@@ -319,10 +319,10 @@ Restart પછી Executor ને કોઈ mapping વાંચવું પડ
 [sessions-presets]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/sessions.ts#L48
 [sessions-prompt]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/sessions.ts#L162-L167
 [sessions-worktools]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/sessions.ts#L61-L62
-[test-double-stop]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/tests/panel-execution.spec.tsx#L217
 [test-interrupted]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/tests/core-engine.spec.ts#L702-L722
 [test-prepare]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/tests/runtime.spec.ts#L1079-L1097
 [test-resume]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/tests/core-engine.spec.ts#L296-L311
+[tickets-end]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/core/tickets.ts#L345-L363
 [tickets-restart]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/core/tickets.ts#L318-L327
 [tools-report]: https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/src/app/tools/executor.ts#L74-L103
 <!-- citations:end -->

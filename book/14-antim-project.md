@@ -60,7 +60,7 @@ A બધાનો પાયો છે. B વૈકલ્પિક છે (DSH, m
 
 ❓ "Live પ્રદર્શનનાં પગલાં કયાં, અને દરેકમાં શું જોવાનું?"
 
-💻 > ⚠️ **અચકાસાયેલું.** આ આખો ભાગ અમે ચલાવ્યો નથી. પગલાં repository ના docs ([setup][setup-md], [docs/006][doc-deploy]) પરથી છે.
+💻 > ⚠️ **અચકાસાયેલું.** આ આખો ભાગ અમે ચલાવ્યો નથી. પગલાં repository ના docs ([`SETUP.md`][setup-md], [docs/006][doc-deploy]) પરથી છે.
 
 1. **Setup** ([પ્રકરણ 2](02-setup-operation.md)): profile, port 3082, `stateDir`, `gh-agent` wrapper (agent account `widgets-agent`), repository `demo-org/widgets`, allowed `alice`, mode `observe`, prepare command (worktree).
 2. **Delivery requirements** team section: "Run `pnpm install && pnpm check` before marking ready; include the command output summary in the PR. Never enable auto-merge."
@@ -148,7 +148,7 @@ A બધાનો પાયો છે. B વૈકલ્પિક છે (DSH, m
 | ભાગ | ફાઇલો |
 |---|---|
 | A | [`labs/running-example.spec.ts`](../labs/running-example.spec.ts), [`labs/final-project.spec.ts`](../labs/final-project.spec.ts), [`evidence/`](../evidence/running-example.log.json) |
-| B | [`docs/setup.md`][setup-md], [docs/006][doc-deploy] |
+| B | [`SETUP.md`][setup-md], [docs/006][doc-deploy] |
 | C | `src/policy.ts` ([gate][policy-gate], [effects][policy-effects]), `src/core/evals.ts` ([stop][evals-stop]) |
 | D | [`labs/patches/`](../labs/patches/) |
 | E | [docs/007][doc-arch], [docs/000][doc-philosophy] |

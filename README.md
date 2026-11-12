@@ -1,87 +1,129 @@
 # DeepSeek Super Agent Prototype — શરૂઆતથી Advanced Developer સુધી
 
-> `deepseek-ai/dsh-superagent-prototype` repository ને સમજવા, ચલાવવા, debug કરવા, બદલવા, test કરવા અને extend કરવા માટેનું વ્યવહારુ ગુજરાતી પુસ્તક.
+એક ગુજરાતી પુસ્તક, જે એક જ વાર્તામાં (અમદાવાદનું "અન્નપૂર્ણા થાળી ઘર", દિવાળી પછીની લગ્નસરા) એક આખી autonomous agent system ને ખોલે છે: source વાંચીને, ચલાવીને, તોડીને અને સુધારીને.
 
-| વિગત | મૂલ્ય |
-| --- | --- |
-| Primary repository | <https://github.com/deepseek-ai/dsh-superagent-prototype> |
-| Reference commit | [`8c32a9dc5d72c033816c6a8110b37f40cf94fba4`](https://github.com/deepseek-ai/dsh-superagent-prototype/tree/8c32a9dc5d72c033816c6a8110b37f40cf94fba4) (2026-10-31, "feat: add the dsh-superagent research prototype") |
-| Inspection તારીખ | 2026-11-05 |
-| Inspection environment | Linux, Node.js v22.23.4, pnpm 11.7.0, git 2.43.0, tmux 3.4, Python 3.13, gh 2.89.0 |
-| DeepSeek Harness (DSH) | આ environment માં installed **ન હતું**; DSH પર live run નથી કર્યો (જુઓ [Verification report](appendices/F-verification-report.md)) |
-| `pnpm check` પરિણામ | પહેલો run ✅ (59 files / 1197 tests, build complete). પછીના runs માં એક upstream flaky Feishu test fail થયો (1196/1197). કારણ અને fix: [પ્રકરણ 12.6](chapters/12-customization.md#126-upstream-માં-મળેલી-test-flakiness-bonus) |
+- **વિષય:** [`deepseek-ai/dsh-superagent-prototype`](https://github.com/deepseek-ai/dsh-superagent-prototype): GitHub (અને Feishu) પરથી વિનંતીઓ લઈ, નિયમો મુજબ સ્વીકારી, worker agents ને કામ સોંપતી, અને માણસને ફક્ત જરૂર પડે ત્યારે બોલાવતી "super agent" નો research prototype.
+- **Pinned commit:** [`8c32a9d`](https://github.com/deepseek-ai/dsh-superagent-prototype/tree/8c32a9dc5d72c033816c6a8110b37f40cf94fba4) (2026-10-31). દરેક source link આ commit પર pinned છે, line numbers સાથે.
+- **સાથી લેખ:** DeepSeek Harness નો "Exploring Super-agent Design: Towards a More Autonomous Agent System". [પ્રકરણ 0A](book/00a-lekh-ane-prototype.md) લેખના દરેક વિચારને prototype ના code સાથે જોડે છે, અને જ્યાં બંને અલગ પડે છે તે કહે છે.
+- **વાચક:** college પાસ કરેલો કોઈ પણ વિદ્યાર્થી. Programming નો થોડો પરિચય મદદ કરશે; બાકીના શબ્દો જ્યાં પહેલી વાર આવે ત્યાં સમજાવેલા છે.
+- **DSH, model key કે GitHub account જરૂરી નથી.** બધી [labs](labs/README.md) repository ના પોતાના tests અને fakes પર, offline ચાલે છે.
 
-## આ પુસ્તક કેવી રીતે વાંચવું
+> **નિશાન:** ✅ pinned source વાંચીને મળેલી હકીકત · 🧪 આ પુસ્તક માટે ચલાવ્યું અને જોયું · ⚠️ ચકાસ્યું નથી, અથવા વાર્તા અને technical વચ્ચેનો ફરક · 📝 પુસ્તકે સૂચવેલું, repository માં નથી.
 
-દરેક પ્રકરણ પહેલાંના પ્રકરણો પર જ build થાય છે, જેમ repository ના `docs/000…008` કરે છે. દરેક મોટા concept માટે ક્રમ એક જ છે:
-**હેતુ → સાદું ઉદાહરણ → source location → code explanation → જોડાયેલા components → runtime behavior → exercise → modification → verification.**
+> ⚠️ **પ્રામાણિક હદ.** આ prototype અમે **live ચલાવ્યો નથી** (DSH, model provider અને agent account ઉપલબ્ધ નહોતાં). Domain ના નિયમો ખરા `Engine` પર tests વડે ચકાસ્યા છે; model નું વર્તન, ખરું GitHub અને panel નું browser નહીં. પૂરો હિસાબ: [પરિશિષ્ટ G](appendix/G-verification-log.md).
 
-દરેક code claim સાથે commit-pinned GitHub link છે. Text માં ચાર પ્રકારના labels વાપરીએ છીએ:
+> 📖 **રંગીન web આવૃત્તિ:** <https://claude.ai/artifact/PPin1mKYHGEpZhyeMtboRz>
+> આખું પુસ્તક એક પાનામાં: થાળીનું ચિત્ર, chapter cards, રંગીન દૃશ્યો, diagrams, light અને dark mode, અક્ષરનું કદ નાનું-મોટું, phone પર પણ. આ link ખાનગી છે: બીજા લોકો તેને ત્યારે જ ખોલી શકે જ્યારે માલિક પાના ના Share menu માંથી તેને share કરે. ફરી બનાવવા: `node tools/build-artifact.mjs <marked.esm.js> <out.html>`.
 
-| Label | અર્થ |
-| --- | --- |
-| **[Source]** | Pinned commit નો code વાંચીને મળેલી હકીકત |
-| **[Test ચલાવ્યો]** | આ પુસ્તક માટે ખરેખર ચલાવેલો test/command અને તેનું પરિણામ |
-| **[Observed]** | ચલાવેલા code નું observed output (જેમ કે [`examples/running-example.log.json`](examples/running-example.log.json)) |
-| **[ધારણા]** / **[Proposed]** | Verify ન થયેલી ધારણા, અથવા પુસ્તકે સૂચવેલો ફેરફાર (repository માં નથી) |
+## વાર્તા એક ફકરામાં
 
-Code excerpts પણ labelled છે: **real** (exact lines), **shortened** (`…` વડે ટૂંકું કરેલું), **pseudocode**, અથવા **proposed patch**.
+**આરવ** દિવાળીના વેકેશનમાં ઘરે આવ્યો છે. તેના પપ્પાના ભોજનાલયમાં લગ્નસરાના ઓર્ડરનો ધોધ છે, અને પિતરાઈ બહેન **મીરાદીદી** એ એક નવું **ઓર્ડર-ડેસ્ક** ગોઠવ્યું છે. ડેસ્ક પર **સવિતાબેન** બેસે છે: તે ચિઠ્ઠીઓ વાંચે છે અને કામ વહેંચે છે, પણ ચૂલાને હાથ નથી લગાડતાં. દરવાજે **ગોવિંદકાકા** યાદી લઈને ઊભા છે. **છોટુ** દર મિનિટે રજિસ્ટરમાંથી નવી ચિઠ્ઠીઓ લાવે છે. **જશુભાઈ** ચૂલા અને ઓટલા ફાળવે છે. **મુનીમજી** નો પાકો ચોપડો લાઈટ જાય તો પણ કશું ભૂલતો નથી. અને **પપ્પા** રસોડામાં આવ્યા વગર, એક પાટિયા પરથી બધું જુએ છે.
 
-## Running example
+પંદર દિવસમાં આરવ એક ઓર્ડરને, અલકાબેનની **"@widgets-agent READMEમાં setup instructions સુધારો અને જરૂરી checks ચલાવો."**, ચિઠ્ઠીથી છેલ્લા જવાબ સુધી અનુસરે છે: એ જ ચિઠ્ઠી બે વાર આવે, યાદી બહારના મનોજભાઈ વચ્ચે બોલે, ફેરફાર આવે, રસોઈ બગડે, લાઈટ જાય, અને ગ્રાહક "બંધ કરો" કહે.
 
-આખા પુસ્તકમાં એક જ demonstration repository `demo-org/widgets` અને એક જ request વાપરીએ છીએ. Agent account `widgets-agent` છે, allowed person `alice` છે, અને અજાણી વ્યક્તિ `mallory` છે:
+વાર્તા શણગાર નથી. ભોજનાલયમાં જે **ઘટના** બને છે તે જ system નો **નિયમ** છે, અને બંને એક જ કારણથી બન્યા છે.
 
-> **"@widgets-agent READMEમાં setup instructions સુધારો અને જરૂરી checks ચલાવો."**
+## વિષયસૂચિ
 
-આ request ને duplicate event, unauthorized sender, follow-up, worker failure, human stop અને restart સાથે ફરી જોઈએ છીએ. [`examples/running-example.spec.ts`](examples/running-example.spec.ts) આ બધું **real** `Engine`, **real** `settingsPolicy` અને **real** GitHub Trigger builders સાથે ચલાવે છે.
+શરૂઆત [સમગ્ર નકશો](book/overview-samagra-naksho.md) થી કરો: આખું પુસ્તક, પાત્રો અને બાર સ્ટેશન એક પાનામાં.
 
-## અનુક્રમણિકા (Table of contents)
+| Level | દિવસ | પ્રકરણ | વાર્તામાં | મુખ્ય lab |
+|---|---|---|---|---|
+| — | — | **[સમગ્ર નકશો](book/overview-samagra-naksho.md)** | આખું ઘર એક નજરે | પાત્રો ↔ code; વાંચવાના માર્ગ |
+| 0 | 1 | [પાયો](book/00-paayo.md) | આરવ ઘરે આવે છે | `pnpm check`: 59 files, 1197 tests |
+| 0 | 1 | [લેખ અને prototype](book/00a-lekh-ane-prototype.md) | મીરાદીદીની નોંધપોથી | લેખનું વાક્ય → code ની લીટી |
+| 1 | 2 | [Domain model](book/01-domain-model.md) | ચિઠ્ઠી, પાનું, પરવાનો, જોબ-કાર્ડ | Running example ચલાવો |
+| 2 | 3 | [Setup અને operation](book/02-setup-operation.md) | ડેસ્ક ગોઠવવું; બહાદુરનો આંટો | Offline labs; live ⚠️ |
+| 3 | 4 | [Startup](book/03-startup.md) | સવારે ઘર ખોલવાનો ક્રમ | Pass interval બદલો |
+| 4 | 5 | [Sources અને intake](book/04-sources-intake.md) | છોટુ, દોરી અને સિક્કો | Edit કરેલો comment |
+| 5 | 6 | [Policy અને evaluation](book/05-policy-eval.md) | ગોવિંદકાકાની યાદી | `REQUEUES` બદલો: 1 test તૂટે |
+| 6 | 7 | [Tickets અને assignments](book/06-tickets-assignments.md) | જોબ-કાર્ડ અને પાળી | Stop પછી 3 ચિઠ્ઠી કેમ પાછી આવી |
+| 7 | 8 | [Worker execution](book/07-worker-execution.md) | જશુભાઈ અને ચૂલા | Background મર્યાદા: 3 tests તૂટે |
+| 8 | 9 | [Store, effects, outbox](book/08-store-effects-outbox.md) | પાકો ચોપડો, ખીંટી, જવાબ-ટોપલી | Crash windows |
+| 9 | 10 | [Tools, prompts, skills](book/09-tools-prompts-skills.md) | ઓજારનું ખાનું; સૂચના-પત્ર | Prompt માં એક લીટી: 2 tests તૂટે |
+| 10 | 11 | [Panel](book/10-panel.md) | પપ્પાનું પાટિયું | Stop બટન, click થી ચૂલા સુધી |
+| 11 | 12 | [Debugging](book/11-debugging.md) | આરવ વૈદ બને છે | દસ ફરિયાદ; સ્વતંત્ર નિદાન |
+| 12 | 13 | [Customization](book/12-customization.md) | પાયો હલાવ્યા વગર ઘર બદલવું | 4 patches: 61 files, 1199 tests |
+| 13 | 14 | [Advanced engineering](book/13-advanced-engineering.md) | અગાસી પરથી ઘર | Benchmark: 2× ઝડપ, છતાં ન બદલો |
+| 14 | 15 | [અંતિમ project](book/14-antim-project.md) | આરવનો છેલ્લો દિવસ | Acceptance test; review |
+| — | પછી | [આગળનો રસ્તો](book/15-aagal-no-rasto.md) 📝 | થાળી ઘરથી આખી પેઢી સુધી | 24×7, back-office, મંજૂરી, ઘણા વિભાગ |
 
-### ભાગ 1 — પાયો
-- [પ્રકરણ 0 — Repository વાંચવાનો પાયો](chapters/00-foundation.md)
-- [પ્રકરણ 0A — Super-agent design article અને આ prototype](chapters/00a-superagent-article.md)
-- [પ્રકરણ 1 — Domain model](chapters/01-domain-model.md)
-- [પ્રકરણ 2 — Setup અને operation](chapters/02-setup-operation.md)
+### પરિશિષ્ટ
 
-### ભાગ 2 — Architecture નો પ્રવાસ
-- [પ્રકરણ 3 — Startup architecture](chapters/03-startup.md)
-- [પ્રકરણ 4 — Sources અને intake](chapters/04-sources-intake.md)
-- [પ્રકરણ 5 — Policy અને evaluation](chapters/05-policy-eval.md)
-- [પ્રકરણ 6 — Tickets અને Assignments](chapters/06-tickets-assignments.md)
-- [પ્રકરણ 7 — Worker execution](chapters/07-worker-execution.md)
-- [પ્રકરણ 8 — Store, Effects અને Outbox](chapters/08-store-effects-outbox.md)
-- [પ્રકરણ 9 — Tools, prompts અને skills](chapters/09-tools-prompts-skills.md)
-- [પ્રકરણ 10 — Management panel](chapters/10-panel.md)
+- [A — Source અને symbol index](appendix/A-source-index.md) (254 સંદર્ભ; પૂરું કોષ્ટક: [citations.generated.md](appendix/citations.generated.md))
+- [B — Command reference](appendix/B-command-reference.md)
+- [C — શબ્દકોશ](appendix/C-glossary.md): વાર્તા ↔ ગુજરાતી ↔ English ↔ code
+- [D — Labs અને Mastery check ના ઉકેલ](appendix/D-lab-solutions.md)
+- [E — Mastery rubric](appendix/E-mastery-rubric.md)
+- [F — Coverage map](appendix/F-coverage-map.md)
+- [G — Verification log](appendix/G-verification-log.md): શું ચલાવ્યું, શું જોયું, શું નથી ચકાસ્યું
+- [H — સ્થિતિ અને આગળ વધારવાની નોંધ](appendix/H-status.md)
 
-### ભાગ 3 — Engineer તરીકે કામ
-- [પ્રકરણ 11 — Debugging](chapters/11-debugging.md)
-- [પ્રકરણ 12 — Customization](chapters/12-customization.md)
-- [પ્રકરણ 13 — Advanced engineering](chapters/13-advanced-engineering.md)
-- [પ્રકરણ 14 — Final project](chapters/14-final-project.md)
+## આ પુસ્તક કેવી રીતે શીખવે છે
 
-### પરિશિષ્ટ (Appendices)
-- [A — Source coverage map](appendices/A-coverage-map.md)
-- [B — Source અને symbol index](appendices/B-symbol-index.md)
-- [C — ગુજરાતી–English glossary](appendices/C-glossary.md)
-- [D — Mastery assessment rubric](appendices/D-rubric.md)
-- [E — Exercises ના ઉકેલ અને example patches](appendices/E-solutions.md)
-- [F — Verification report](appendices/F-verification-report.md)
+દરેક પ્રકરણ **દૃશ્યો** માં છે, અને દરેક દૃશ્યમાં ચાર પગલાં:
 
-### Runnable examples
-- [`examples/running-example.spec.ts`](examples/running-example.spec.ts): running example નો end-to-end domain test
-- [`examples/running-example.log.json`](examples/running-example.log.json): તે test નું observed state
-- [`examples/demo-source.spec.ts`](examples/demo-source.spec.ts): simulated Source (પ્રકરણ 12)
-- [`examples/intake-bench.ts`](examples/intake-bench.ts): intake workload measurement (પ્રકરણ 13)
-- [`examples/final-project.spec.ts`](examples/final-project.spec.ts): ready → PR merged (પ્રકરણ 14)
-- [`examples/transient.spec.ts`](examples/transient.spec.ts), [`examples/quoted-mention.spec.ts`](examples/quoted-mention.spec.ts): patches 12.2 અને 12.5 ના tests (patch વગર fail થાય તે અપેક્ષિત છે)
-- [`examples/patches/`](examples/patches/): verified example patches
+| નિશાન | પગલું | ઉદાહરણ ([પ્રકરણ 8](book/08-store-effects-outbox.md), દૃશ્ય 5) |
+|---|---|---|
+| 🎬 | **ઘટના**: ભોજનાલયમાં કંઈક બને છે | છોટુ જવાબ લખીને પાછો આવે તે પહેલાં લાઈટ જાય છે. લાઈટ આવે ત્યારે તે ફરી લખશે? |
+| ❓ | **આરવનો સવાલ** | "ગ્રાહકને બે જવાબ જશે?" |
+| 💻 | **Code માં**: એ જ નિયમ pinned source માં, અને ચલાવીને | દરેક GitHub comment માં છૂપો marker; ફરી મોકલતાં પહેલાં marker શોધાય. |
+| 🔬 | **Expert નજર**: નિયમ કેમ બન્યો, તૂટે તો શું બગડે | "Exactly-once" અશક્ય છે; "at-least-once + idempotency" શક્ય છે. |
 
-Examples ચલાવવા માટે, તેમને pinned checkout ના `tests/` (અથવા `bench/`) માં copy કરો. પગલાં [પ્રકરણ 2](chapters/02-setup-operation.md#25-offline-lab-repository-build-અને-tests) માં છે.
+ઘટના યાદ રહે એટલે નિયમ યાદ રહે; અને ઘટનામાં નિયમનું **કારણ** છે, એટલે ગોખવું નથી પડતું.
 
-## Progress
+દરેક પ્રકરણનો ક્રમ: 🎯 તમે શું કરી શકશો → 🗺️ નકશો (diagram, તીરોની સમજ સાથે) → દૃશ્યો → Source map → 🧪 Lab → 🔮 આગાહી કસોટી → 🩺 નિષ્ફળતા → ✅ સાર (ઘટના → નિયમ કોષ્ટક, યાદ-ચાવી, કાર્ડ) → 🧠 Mastery check → 🎬 આગળ શું.
 
-કામની સ્થિતિ, inspect કરેલા sources અને બાકીના પ્રશ્નો [PROGRESS.md](PROGRESS.md) માં છે.
+**Code ના ટુકડા** હંમેશાં ઓળખાવેલા છે: *real* (જેમ છે તેમ), *shortened* (`…` વડે ટૂંકાવેલો), *pseudocode*, અથવા 📝 *સૂચિત patch*.
 
-## License નોંધ
+પહેલી વાંચનમાં 🔬 ઝડપથી વાંચો; બીજી વાંચનમાં ત્યાં અટકો.
 
-Upstream repository MIT license હેઠળ છે. આ પુસ્તકમાંના code excerpts ત્યાંથી citation સાથે લીધેલા છે.
+## ઝડપી શરૂઆત
+
+```bash
+git clone https://github.com/deepseek-ai/dsh-superagent-prototype.git && cd dsh-superagent-prototype
+```
+
+```bash
+git checkout 8c32a9dc5d72c033816c6a8110b37f40cf94fba4 && pnpm install --frozen-lockfile
+```
+
+```bash
+pnpm check
+```
+
+પછી running example (`<book>` = આ repository નો path):
+
+```bash
+cp <book>/labs/running-example.spec.ts tests/ && pnpm vitest run tests/running-example.spec.ts
+```
+
+🧪 `1 passed`, અને checkout ના root માં `running-example.log.json`. તેને [`evidence/running-example.log.json`](evidence/running-example.log.json) સાથે સરખાવો. પૂરી રીત: [labs/README](labs/README.md).
+
+## આ repository નું માળખું
+
+| Folder | શું છે |
+|---|---|
+| [`book/`](book/overview-samagra-naksho.md) | સમગ્ર નકશો અને પ્રકરણ 0–15 |
+| [`appendix/`](appendix/A-source-index.md) | પરિશિષ્ટ A–H, અને generated citation કોષ્ટક |
+| [`labs/`](labs/README.md) | ચલાવી શકાય તેવા tests, benchmark અને patches |
+| [`evidence/`](evidence/running-example.log.json) | Running example નો જોયેલો output |
+| `tools/` | Citations, index, ચકાસણી અને web આવૃત્તિ બનાવતાં scripts |
+
+## પુસ્તકને ચકાસવું
+
+દરેક source link એક કોષ્ટક (`tools/citations.tsv`) માંથી આવે છે, અને મશીનથી ચકાસાય છે: file અસ્તિત્વમાં છે, line range સાચી છે, અને તે લીટીઓમાં અપેક્ષિત લખાણ છે.
+
+```bash
+python3 tools/verify_book.py <dsh-superagent-prototype નો pinned checkout>
+```
+
+```bash
+node tools/verify-mermaid.mjs <mermaid અને jsdom install કરેલી directory>
+```
+
+આ tools **એ નથી ચકાસતાં** કે ટાંકેલી લીટીઓ વાક્યના દાવાને ટેકો આપે છે: તે માણસનું કામ છે. દાવો તમારા માટે મહત્વનો હોય ત્યાં link ખોલીને વાંચો.
+
+## License અને આભાર
+
+પુસ્તકનું લખાણ અને lab code આ repository ના [LICENSE](LICENSE) હેઠળ છે. `dsh-superagent-prototype` અને સાથી લેખ તેમના લેખકોના છે; અહીં તેમાંથી ટૂંકા ટુકડા ફક્ત સમજાવવા માટે, pinned links સાથે ટાંક્યા છે. ભૂલો આ પુસ્તકની છે, upstream ની નહીં.

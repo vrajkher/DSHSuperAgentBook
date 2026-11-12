@@ -1,0 +1,255 @@
+# id	path	lines	needle (text that must appear inside the cited lines of the pinned checkout)
+readme	README.md	1-10	Research prototype for reference only
+setup-md	SETUP.md	1-12	Ask one question per message
+pkg-scripts	package.json	46-51	"check": "pnpm typecheck && pnpm test && pnpm build"
+pkg-engines	package.json	52-56	"dsh": "^0.2.1-alpha.2"
+patch-worker	cordis.patch.yml	20-30	id: dsh-superagent-worker
+patch-worker-shell	cordis.patch.yml	39-50	timeoutMs: 5000
+patch-router	cordis.patch.yml	125-135	id: dsh-superagent-router
+patch-router-fs	cordis.patch.yml	163-167	write: false
+profile-example	examples/profile.cordis.patch.yml	1-12	stateDir:
+doc-philosophy	docs/000-philosophy.md	1-10	Take as little human attention as possible
+doc-domain	docs/001-domain.md	1-12	Work moves from Trigger to Eval to execution
+doc-auth	docs/002-authorization.md	1-12	The host enforces allowed lists, rules and Mandates
+doc-exec	docs/003-execution.md	1-12	Each open Ticket has one stage
+doc-prompts	docs/004-prompts.md	1-12	A team can edit three team sections
+doc-panel	docs/005-panel.md	1-12	Does anything need me now?
+doc-deploy	docs/006-deployment.md	1-12	A dedicated DeepSeek Harness profile
+doc-arch	docs/007-architecture.md	1-10	Core classes own domain concepts
+doc-cookbook	docs/008-cookbook.md	1-10	Add a Source
+index-apply	src/index.ts	7-25	export async function apply
+index-inject	src/index.ts	8-8	export const inject
+deploy-config	src/deployment.ts	15-17	stateDir: absolute
+rt-orchestrator	src/app/runtime.ts	51-51	interface Context { orchestrator: SourceHost }
+rt-class	src/app/runtime.ts	59-59	export class Runtime extends Service implements SourceHost
+rt-lock	src/app/runtime.ts	90-98	lockSync(machine.stateDir
+rt-master	src/app/runtime.ts	104-105	orchestrator-${key(machine.stateDir)}
+rt-getter	src/app/runtime.ts	128-130	get engine() { return runtime.engine }
+rt-engine	src/app/runtime.ts	137-153	new Engine({ repo: store
+rt-emit	src/app/runtime.ts	138-153	followupNotice(store, sources, event.data.triggerId)
+rt-passes	src/app/runtime.ts	157-158	new Passes(
+rt-ctor-fail	src/app/runtime.ts	167-171	opened?.close()
+rt-paused	src/app/runtime.ts	200-200	private paused(): boolean
+rt-init	src/app/runtime.ts	201-218	private async initialize(): Promise<void>
+rt-shutdown	src/app/runtime.ts	229-253	private async shutdown(): Promise<void>
+setup-run	src/app/setup.ts	45-52	async run(settings: Settings): Promise<boolean>
+setup-restart	src/app/setup.ts	59-59	setTimeout(this.host.restart, 0)
+passes-start	src/app/passes.ts	28-28	setInterval(() => { this.request() }, 2000)
+passes-receive	src/app/passes.ts	34-39	if (result === 'stored') this.request()
+passes-pump	src/app/passes.ts	56-68	this.host.engine.evaluateDue()
+model-trigger	src/core/model.ts	23-39	export interface Trigger
+model-disposition	src/core/model.ts	42-61	export interface TriggerDisposition
+model-owners	src/core/model.ts	75-88	export function followupOwners
+model-settled	src/core/model.ts	93-94	export const settled
+model-basis	src/core/model.ts	116-123	export type MandateBasis
+model-mandate	src/core/model.ts	126-133	export interface Mandate
+model-evaluation	src/core/model.ts	136-154	export interface Evaluation
+model-thread	src/core/model.ts	157-182	export interface Thread
+model-decision	src/core/model.ts	192-209	export interface Decision
+model-report	src/core/model.ts	216-216	export type ReportState
+model-assignment	src/core/model.ts	218-233	export interface Assignment
+model-input	src/core/model.ts	235-257	export type TicketInput
+model-attention	src/core/model.ts	275-275	export interface Attention
+model-ticket	src/core/model.ts	277-308	export interface Ticket
+model-live	src/core/model.ts	318-318	export const liveTicket
+model-waits	src/core/model.ts	349-353	export function waitsForPerson
+ports-gate	src/core/ports.ts	7-7	export type GateResult
+ports-policy	src/core/ports.ts	17-27	export interface Policy
+ports-assessor	src/core/ports.ts	49-53	export interface Assessor
+ports-executor	src/core/ports.ts	59-69	export interface Executor
+ports-outbox	src/core/ports.ts	76-83	export interface Outbox
+ports-events	src/core/ports.ts	86-102	export interface DomainEvents
+ports-repos	src/core/ports.ts	106-134	export interface Repositories
+part-leftworkers	src/core/part.ts	32-35	protected leftToWorkers
+part-handback	src/core/part.ts	42-48	protected handBack
+part-queue	src/core/part.ts	57-63	protected queueForEval
+engine-class	src/core/engine.ts	24-38	export class Engine
+engine-receive	src/core/engine.ts	48-48	receive(trigger: Trigger): ReceiveResult
+engine-evaluatedue	src/core/engine.ts	75-85	evaluateDue(): void
+engine-decide	src/core/engine.ts	100-100	decide(triggerId: string, outcome: Outcome): Decision
+engine-attach	src/core/engine.ts	109-121	attach(ticketId: string, triggerId: string, note?: string): Ticket
+engine-stop	src/core/engine.ts	160-160	stopTicket(ticketId: string, reason?: string): Ticket
+engine-roles	src/core/engine.ts	261-270	export type EngineForSources
+intake-receive	src/core/intake.ts	19-62	receive(received: Trigger): ReceiveResult
+intake-dup	src/core/intake.ts	23-23	return 'duplicate'
+intake-filter	src/core/intake.ts	25-29	return 'filtered'
+intake-fanout	src/core/intake.ts	38-46	const resumes = trigger.human
+intake-queue	src/core/intake.ts	58-58	if (!this.owners(trigger).length) this.queueForEval(trigger)
+evals-requeues	src/core/evals.ts	19-19	const REQUEUES = 2
+evals-due	src/core/evals.ts	35-46	due(thread: Thread, policy: Policy): void
+evals-delivered	src/core/evals.ts	48-55	delivered(evalId: string, policy: Policy): void
+evals-expire	src/core/evals.ts	60-69	private expire(thread: Thread): void
+evals-start	src/core/evals.ts	71-119	start(threadKeyValue: string, policy: Policy): void
+evals-decide	src/core/evals.ts	131-156	decide(triggerId: string, outcome: Outcome): Decision
+evals-handback	src/core/evals.ts	183-188	handback(ticketId: string, triggerId: string, reason: string): boolean
+evals-reassess	src/core/evals.ts	223-230	private reassess
+evals-direct	src/core/evals.ts	271-280	private directEval
+evals-decideeval	src/core/evals.ts	282-304	private decideEval
+evals-stop	src/core/evals.ts	293-302	stopNotExplicit
+evals-accept	src/core/evals.ts	306-316	private accept
+tickets-create	src/core/tickets.ts	37-56	create(id: string, decisionId: string, mandate: Mandate
+tickets-closed	src/core/tickets.ts	77-90	threadClosed(thread: ThreadRef
+tickets-followsdone	src/core/tickets.ts	95-101	followsDone(ticket: Ticket)
+tickets-retry	src/core/tickets.ts	168-180	retry(ticketId: string): Ticket
+tickets-addinput	src/core/tickets.ts	234-245	addInput(ticket: Ticket, input: TicketInput): void
+tickets-wake	src/core/tickets.ts	252-270	wake(ticketId: string): void
+tickets-letgo	src/core/tickets.ts	294-309	private letGo
+tickets-restart	src/core/tickets.ts	318-327	restart(ticket: Ticket, running: Assignment
+tickets-end	src/core/tickets.ts	345-363	end(ticketId: string, by: TicketEndBy
+tickets-unfinished	src/core/tickets.ts	370-379	private unfinished
+assign-note	src/core/assignments.ts	21-21	const RECOVERY_NOTE
+assign-started	src/core/assignments.ts	34-43	started(ticketId: string, assignmentId: string): void
+assign-delivered	src/core/assignments.ts	48-58	delivered(ticketId: string, assignmentId: string, inputIds: string[]): void
+assign-read	src/core/assignments.ts	60-65	read(ticketId: string, inputIds: string[]): void
+assign-interrupted	src/core/assignments.ts	83-92	interrupted(ticketId: string, assignmentId: string): void
+assign-report	src/core/assignments.ts	99-134	report(ticketId: string, report: WorkerReport): Ticket
+replies-ack	src/core/replies.ts	48-63	private acknowledge
+replies-answer	src/core/replies.ts	64-92	private answer
+stage-fn	src/core/stage.ts	9-21	export function ticketStage
+stage-retry	src/core/stage.ts	24-26	export function canRetry
+errors-table	src/core/errors.ts	2-47	export const USER_ERRORS
+errors-class	src/core/errors.ts	54-61	export class UserError extends Error
+reasons-table	src/core/reasons.ts	5-26	export const REASONS
+ids-key	src/core/ids.ts	3-5	export function key
+memory-repo	src/core/memory.ts	10-24	export class MemoryRepositories implements Repositories
+policy-outcome	src/policy.ts	40-61	export function assessmentOutcome
+policy-rules	src/policy.ts	62-65	const DEFAULT_RULES
+policy-evalcfg	src/policy.ts	83-87	export const EvalConfigSchema
+policy-execcfg	src/policy.ts	91-97	export const ExecutorConfigSchema
+policy-version	src/policy.ts	116-118	export function policyVersion
+policy-allowed	src/policy.ts	119-121	export function allowedSender
+policy-effects	src/policy.ts	144-165	export function policyEffects
+policy-machinegate	src/policy.ts	171-188	const machineGate
+policy-gate	src/policy.ts	191-211	gate(trigger: Trigger, thread, tickets)
+policy-admits	src/policy.ts	212-212	admitsInferred
+policy-revalidate	src/policy.ts	213-240	revalidate(mandate: Mandate)
+admission-prompt	prompts/admission.md	1-12	Assess proactive candidates yourself
+worker-prompt	prompts/worker.md	1-10	You are a worker.
+effects-later	src/app/effects.ts	5-7	export class Later extends Error
+effects-payloads	src/app/effects.ts	11-24	export interface EffectPayloads
+effects-enqueue	src/app/effects.ts	61-66	enqueue<K extends EffectKind>
+effects-dispatch	src/app/effects.ts	103-122	private dispatch(): void
+effects-attempt	src/app/effects.ts	130-146	private async attempt
+store-sets	src/app/store.ts	30-44	const SETS
+store-open	src/app/store.ts	58-101	PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL
+store-newer	src/app/store.ts	66-67	Unsupported orchestrator database version
+store-atomic	src/app/store.ts	140-153	atomic<T>(operation: () => T): T
+store-aftercommit	src/app/store.ts	159-162	afterCommit(action: () => void): void
+store-behind	src/app/store.ts	259-261	behind: (id: string, failures: number)
+store-receipts	src/app/store.ts	254-288	readonly receipts
+migration-versions	src/app/migration.ts	20-22	export const SCHEMA_VERSION = 11
+outbox-class	src/app/outbox.ts	22-25	export class Outbox implements OutboxPort
+outbox-send	src/app/outbox.ts	27-32	send(message: OutboundMessage): void
+outbox-deliver	src/app/outbox.ts	39-51	private async deliver(id: string): Promise<void>
+gh-channel	src/sources/github-channel.ts	18-45	export async function sendGithub
+gh-marker	src/sources/github-channel.ts	34-40	<!-- dsh-superagent:${message.id} -->
+feishu-idem	src/sources/feishu-channel.ts	18-24	--idempotency-key
+text-limits	src/infra/text.ts	3-4	export const IM_WORDS = 100
+text-samename	src/infra/text.ts	19-19	export const sameName
+env-token	src/infra/environment.ts	45-48	GH_TOKEN: undefined
+kind-source	src/sources/kind.ts	85-113	export interface SourceKind
+kind-channel	src/sources/kind.ts	46-56	export interface SourceChannel
+registry-register	src/sources/registry.ts	20-35	register<C extends Record<string, unknown>>
+registry-scope	src/sources/registry.ts	124-132	scope(input: { source: string; meta: Record<string, unknown> }
+host-context	src/sources/host.ts	31-45	export interface SourceContext
+host-receive	src/sources/host.ts	41-42	callers should await completion before advancing read cursors
+gh-config	src/sources/github.ts	25-28	const GithubConfigSchema
+gh-scope	src/sources/github.ts	59-62	scope: ({ meta }, config) =>
+gh-env	src/sources/github.ts	92-105	DSH_SUPERAGENT_GITHUB_REPOSITORY
+gh-apply	src/sources/github.ts	110-122	export function apply(ctx: Context): void
+gh-watch	src/sources/github.ts	127-146	async function watch
+gh-stream	src/sources/github.ts	203-249	async function readStream
+gh-round	src/sources/github.ts	280-296	export async function pollRound
+gh-notifications	src/sources/github.ts	298-343	async function pollNotifications
+gh-notified	src/sources/github.ts	344-374	async function readNotified
+gh-comments	src/sources/github.ts	384-403	async function intakeComments
+gh-self	src/sources/github.ts	397-397	if (sameName(comment.user.login, login)) continue
+ght-channel	src/sources/github-trigger.ts	8-9	export const githubChannel
+ght-human	src/sources/github-trigger.ts	46-47	export const isHumanLogin
+ght-mentions	src/sources/github-trigger.ts	60-61	export const mentions
+ght-comment	src/sources/github-trigger.ts	65-77	export function commentTrigger
+ght-issue	src/sources/github-trigger.ts	82-89	export function issueTrigger
+ghp-branch	src/sources/github-pull.ts	27-28	export const ticketBranch
+ghp-claim	src/sources/github-pull.ts	35-50	export function claimPull
+ghp-observe	src/sources/github-pull.ts	57-69	export async function observePull
+ghp-notices	src/sources/github-pull.ts	90-105	export function pullEndNotices
+poll-horizon	src/sources/poll.ts	6-6	export const POLL_HORIZON_MS
+poll-cursor	src/sources/poll.ts	16-16	export const cursorAt
+feishu-scope	src/sources/feishu.ts	54-59	direct_messages_not_allowed
+feishu-trigger	src/sources/feishu-trigger.ts	31-44	export function feishuTrigger
+feishu-watch	src/sources/feishu-loops.ts	43-66	async function watch
+feishu-consume	src/sources/feishu-loops.ts	70-103	async function consume
+dsh-session-id	src/executor/dsh.ts	24-24	export const workerSessionId
+dsh-limits	src/executor/dsh.ts	28-36	const BACKGROUND_LIMIT_MS = 30 * 60_000
+dsh-prepare-failed	src/executor/dsh.ts	39-43	class PrepareFailed extends Error
+dsh-transient	src/executor/dsh.ts	44-55	export function transient
+dsh-execution	src/executor/dsh.ts	97-111	export function ticketExecution
+dsh-capped	src/executor/dsh.ts	113-116	const ASSIGNMENT_CHARS = 1500, TRIGGER_CHARS = 600
+dsh-policy-msg	src/executor/dsh.ts	138-148	function policyMessage
+dsh-input-msg	src/executor/dsh.ts	156-164	export function inputMessage
+dsh-slots	src/executor/dsh.ts	171-199	export class WorkerSlots
+dsh-ctor	src/executor/dsh.ts	228-236	host.effects.handle('launch'
+dsh-prepare	src/executor/dsh.ts	247-262	private async prepareDirectory
+dsh-start	src/executor/dsh.ts	264-268	this.host.effects.enqueue('launch'
+dsh-launch-queued	src/executor/dsh.ts	270-285	private async launchQueued
+dsh-deliver-queued	src/executor/dsh.ts	290-328	private async deliverQueued
+dsh-stop	src/executor/dsh.ts	357-370	stop(ticket: Ticket, assignment: Assignment, reason: string): void
+dsh-launch	src/executor/dsh.ts	424-470	private async launch
+dsh-inbox-remove	src/executor/dsh.ts	446-448	agent.inbox.remove
+dsh-install	src/executor/dsh.ts	477-512	install(): void
+dsh-read-event	src/executor/dsh.ts	495-504	this.host.engine.inputsRead(ticketId, read)
+dsh-resume	src/executor/dsh.ts	524-537	resume(): void
+dsh-resume-after	src/executor/dsh.ts	555-576	private resumeAfter
+dsh-idle	src/executor/dsh.ts	601-672	private async workerIdle
+sessions-presets	src/app/sessions.ts	48-48	WORKER_PRESET = 'dsh-superagent-worker', ROUTER_PRESET = 'dsh-superagent-router'
+sessions-worktools	src/app/sessions.ts	61-62	const WORK_TOOLS
+sessions-nowait	src/app/sessions.ts	77-86	function noWait
+sessions-relay-handler	src/app/sessions.ts	104-105	host.effects.handle('relay'
+sessions-ensure	src/app/sessions.ts	138-155	async ensure(id: string, cwd: string, title: string
+sessions-prompt	src/app/sessions.ts	162-167	async prompt(sessionId: string, requestId: string
+sessions-register	src/app/sessions.ts	206-216	private registerTool
+assess-limits	src/app/assessment.ts	37-37	STUB_CHARS = 50
+assess-handler	src/app/assessment.ts	96-101	this.host.engine.candidateDelivered(evalId)
+assess-request	src/app/assessment.ts	104-104	request(candidate: Candidate): void
+settings-save	src/app/settings.ts	148-196	async save(block: SettingsBlock, value: unknown, revision: number, origin: SettingsOrigin)
+prompts-teams	src/app/prompts.ts	14-14	export const TEAM_SECTIONS
+prompts-keys	src/app/prompts.ts	24-26	const PART_KEYS
+prompts-schema	src/app/prompts.ts	35-35	export const PromptConfigSchema
+prompts-parts	src/app/prompts.ts	102-115	export function promptParts
+tools-route-schema	src/app/tools/main.ts	47-56	const RouteItemSchema
+tools-route-fields	src/app/tools/main.ts	61-68	const FIELDS
+tools-route	src/app/tools/main.ts	88-120	function route(
+tools-main	src/app/tools/main.ts	155-160	export function mainTools
+tools-requeue	src/app/tools/main.ts	188-201	orchestrator_trigger_requeue
+tools-executor	src/app/tools/executor.ts	23-27	export function executorTools
+tools-ack	src/app/tools/executor.ts	28-40	orchestrator_ack
+tools-handback	src/app/tools/executor.ts	65-73	orchestrator_trigger_handback
+tools-report	src/app/tools/executor.ts	74-103	orchestrator_report
+resources-text	src/app/resources.ts	87-87	textPage(resource, body, offset, limit ?? 4000)
+http-origin	src/app/http.ts	75-79	export function sameOrigin
+http-failure	src/app/http.ts	81-91	function failure(error: unknown)
+http-state	src/app/http.ts	105-110	export function stateView
+http-requeue	src/app/http.ts	177-181	'POST triggers/:id/requeue'
+http-stop	src/app/http.ts	194-194	'POST tickets/:id/stop'
+http-register	src/app/http.ts	230-247	export function registerHttp
+api-filters	src/app/api.ts	12-12	export const TICKET_FILTERS
+api-stop	src/app/api.ts	36-36	'POST tickets/:id/stop'
+views-actions	src/app/views/records.ts	123-123	actions: { retry: canRetry(ticket), stop: liveTicket(ticket) }
+client-stop	src/client/ticket.tsx	192-196	onConfirm={() => after(call('POST tickets/:id/stop', { id }))}
+client-action	src/client/provider.tsx	42-56	export function useAction
+client-fetch	src/client/api.ts	33-57	'x-orchestrator-request': '1'
+client-draft	src/client/draft.tsx	80-85	export function draftReducer
+test-engine-harness	tests/core-engine.spec.ts	15-66	function harness(
+test-intake-once	tests/core-engine.spec.ts	75-82	stores a trigger once and records source filtering
+test-debounce	tests/core-engine.spec.ts	104-114	serializes evals per thread and debounces triggers that arrive meanwhile
+test-accept-atomic	tests/core-engine.spec.ts	136-145	records an accept with its ticket, subscriptions and acknowledgement together, or none of them
+test-deadline	tests/core-engine.spec.ts	161-185	deadline from its delivery
+test-fanout	tests/core-engine.spec.ts	187-205	later message on a subscribed thread to the live ticket as context, and not to Eval
+test-resume	tests/core-engine.spec.ts	296-311	resumes an ended ticket on any person
+test-interrupted	tests/core-engine.spec.ts	702-722	starts an Assignment interrupted mid-work again with a note
+test-feishu-flaky	tests/sources.spec.ts	1089-1099	takes in the event lines it reads
+test-fake-cli	tests/sources.spec.ts	1046-1060	events) echo '[event] ready' >&2
+test-prepare	tests/runtime.spec.ts	1079-1097	runs the prepare command once for a new ticket
+test-double-stop	tests/panel-execution.spec.tsx	217-217	sends one stop for a double click on Confirm
+test-host-fixture	tests/fixtures/host.ts	1-20
+script-service	scripts/dsh-superagent	1-8	Manage a local dsh-superagent service
